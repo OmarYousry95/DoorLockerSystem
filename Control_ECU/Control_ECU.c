@@ -95,7 +95,7 @@ void Control_checkForSavedPassword(void)
 	/*Variable to for loop till password size*/
 	uint8 loop_idx=0;
 	/*Variable to  save it in memory to indicate there is a saved password or not*/
-	uint8 chkFlag=0;
+	uint8 chkFlag;
 
 	/*Wait until HMI ECU sends CHECK_FOR_SAVED_PASSWORD signal so as to begin checking*/
 	while(UART_receiveByte() != CHECK_FOR_SAVED_PASSWORD);
@@ -120,7 +120,7 @@ void Control_checkForSavedPassword(void)
 		 *with the saved one in EEPROM*/
 		g_functionID=3;
 	}
-	else
+	if(chkFlag == NO_SAVED_PASSWORD)
 	{
 		/*Send to HMI ECU a NO_SAVED_PASSWORD signal to indicate no password is saved*/
 		UART_sendByte(NO_SAVED_PASSWORD);
@@ -195,9 +195,11 @@ void Control_checkNewPassword(void)
 		for(loop_idx=0;loop_idx<PASSWORD_SIZE;loop_idx++)
 		{
 			EEPROM_writeByte((eeprom_addr)+loop_idx,g_eeprom[loop_idx]);
+			_delay_ms(10);
 		}
 		/*Write in the eeprom_flag address a PASSWROD_EXIST constant*/
 		EEPROM_writeByte(eeprom_flag,SAVED_PASSWORD);
+		_delay_ms(10);
 		/*Go to Control_receiveAndCheckPassword function*/
 		g_functionID=3;
 	}
@@ -244,10 +246,14 @@ void Control_receiveAndCheckPassword(void)
 	for(loop_idx=0;loop_idx<PASSWORD_SIZE;loop_idx++)
 	{
 		chkPassword[loop_idx]=UART_receiveByte();
+	}
+	for(loop_idx=0;loop_idx<PASSWORD_SIZE;loop_idx++)
+	{
 		EEPROM_readByte((eeprom_addr)+loop_idx,&g_eeprom[loop_idx]);
 	}
 	for(loop_idx=0;loop_idx<PASSWORD_SIZE;loop_idx++)
 	{
+		SET_BIT(PORTA,7-loop_idx);
 		if(chkPassword[loop_idx] != g_eeprom[loop_idx])
 		{
 			mismatch++;
@@ -403,7 +409,7 @@ void fireBuzzerOrOpenDoor(void)
 	count++;
 	/*When count=3, this means 15 sec time
 	 *When g_state=0, this means password is entered correctly*/
-	if(count==3 && g_state==0)
+	if(count==1 && g_state==0)
 	{
 		/*Close the door*/
 		motorRotateAntiClockwise();
@@ -412,7 +418,7 @@ void fireBuzzerOrOpenDoor(void)
 	}
 	/*When count=6, this means 30 sec time
 	 *When g_state=0, this means password is entered correctly*/
-	if(count==6 && g_state==0)
+	if(count==2 && g_state==0)
 	{
 		/*Lock the door*/
 		motorStop();

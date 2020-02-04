@@ -1,0 +1,48 @@
+/***********************************************************************************************
+ * [FILE NAME]:		Control_ECU.h
+ * [AUTHOR]:		Omar Yousry
+ * [DATE CREATED]:	27 Jan 2020
+ * [DESCRIPTION]:	This header file contains configurations and file inclusions of Control_ECU
+ ***********************************************************************************************/
+
+#ifndef CONTROL_ECU_H_
+#define CONTROL_ECU_H_
+
+/******************************************************************
+ * 					  Header Files Inclusion					  *
+ ******************************************************************/
+#include "uart.h"
+
+
+/******************************************************************
+ * 				  			  Macros					          *
+ ******************************************************************/
+#define PASSWORD_SIZE		5u
+#define HMI_ECU_READY	0x10
+#define CHECK_FOR_SAVED_PASSWORD	0x11
+#define NO_SAVED_PASSWORD			0x12
+#define SAVED_PASSWORD		0x13
+#define CORRECT_NEW_PASSWORD	0x14
+#define NON_CORRECT_NEW_PASSWORD	0x15
+#define CORRECT_PASSWORD	0x16
+#define WRONG_PASSWORD 0x17
+#define THIEF	0x18
+#define SYSTEM_UNLOCKED 	0x19
+#define HMI_ECU_READY		0x50
+#define ERROR_TIMES			3u
+#define DOOR_UNLOCKING		0x20
+#define DOOR_LOCKING		0x30
+#define DOOR_LOCKED			0x40
+#define MOTOR_PIN1		PB0
+#define MOTOR_PIN2		PB1
+#define MOTOR_EN		PB2
+#define BUZZER			PB7
+
+/******************************************************************
+ * 				    Public Functions Prototypes					  *
+ ******************************************************************/
+void motorRotateClockwise (void);
+void motorRotateAntiClockwise (void);
+void buzzerON (void);
+
+#endif /* CONTROL_ECU_H_ */

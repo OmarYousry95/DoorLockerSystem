@@ -1,0 +1,81 @@
+/***********************************************************************************************
+ * [FILE NAME]:		HMI_ECU.c
+ * [AUTHOR]:		Omar Yousry
+ * [DATE CREATED]:	27 Jan 2020
+ * [DESCRIPTION]:	This c file contains application code of HMI ECU
+ ***********************************************************************************************/
+
+#include "HMI_ECU.h"
+
+void (*func[4])(void)={HMI_welcome,HMI_setNewPassword,HMI_checkNewPassword,HMI_mainMenu};
+uint8 function_ID=0;
+
+
+int main()
+{
+	/*Initialises LCD*/
+	LCD_init();
+//	uint8 key;
+	while(1)
+	{
+		(*func[function_ID])();
+	}
+}
+
+
+void HMI_welcome(void)
+{
+	LCD_displayStringRowColumn(0,3,"Door Locker");
+	LCD_displayStringRowColumn(1,0,"Press ON to cont");
+	while(KEYPAD_getPressedKey() != 13);
+	LCD_clearScreen();
+	_delay_ms(500);
+	function_ID++;
+}
+
+void HMI_setNewPassword(void)
+{
+	uint8 key[PASSWORD_SIZE];
+	uint8 loop_idx=0;
+	LCD_displayStringRowColumn(0,0,"Set new password");
+	LCD_goToRowColumn(1,0);
+	for(loop_idx=0;loop_idx<PASSWORD_SIZE;loop_idx++)
+	{
+		key[loop_idx]=KEYPAD_getPressedKey();
+		LCD_displayCharacter('*');
+		_delay_ms(500);
+	}
+	function_ID++;
+}
+
+void HMI_checkNewPassword(void)
+{
+	uint8 key[PASSWORD_SIZE];
+	uint8 loop_idx=0;
+	LCD_clearScreen();
+	LCD_displayStringRowColumn(0,0,"Reenter password");
+	LCD_goToRowColumn(1,0);
+	for(loop_idx=0;loop_idx<PASSWORD_SIZE;loop_idx++)
+	{
+		key[loop_idx]=KEYPAD_getPressedKey();
+		LCD_displayCharacter('*');
+		_delay_ms(500);
+	}
+	LCD_clearScreen();
+	function_ID++;
+}
+
+void HMI_mainMenu(void)
+{
+	LCD_displayStringRowColumn(0,0,"(+) Open Door");
+	LCD_displayStringRowColumn(1,0,"(-) Change Pass");
+	if(KEYPAD_getPressedKey() == '+')
+	{
+		SET_BIT(DDRB,PB0);
+		SET_BIT(PORTB,PB0);
+	}
+	if(KEYPAD_getPressedKey() == '-')
+	{
+		function_ID=1;
+	}
+}

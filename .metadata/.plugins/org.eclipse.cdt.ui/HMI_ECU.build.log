@@ -1,7 +1,0 @@
-18:00:34 **** Incremental Build of configuration Debug for project HMI_ECU ****
-Info: Internal Builder is used for build
-avr-gcc -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega16 -DF_CPU=8000000UL -c -o HMI_ECU.o "..\\HMI_ECU.c" 
-avr-gcc -Wl,-Map,HMI_ECU.map -mmcu=atmega16 -o HMI_ECU.elf HMI_ECU.o keypad.o lcd.o timer1.o uart.o 
-
-18:00:34 Build Finished. 0 errors, 0 warnings. (took 374ms)
-

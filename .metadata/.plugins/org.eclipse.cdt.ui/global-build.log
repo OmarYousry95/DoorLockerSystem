@@ -1,4 +1,0 @@
-15:29:10 **** Incremental Build of configuration Debug for project Control_ECU ****
-Info: Internal Builder is used for build
-avr-gcc -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega16 -DF_CPU=8000000UL -c -o Control_ECU.o "..\\Control_ECU.c" 
-avr-gcc -Wl,-Map,Control_ECU.map -mmcu=atmega16 -o Control_ECU.elf Control_ECU.o external_eeprom.o i2c.o timer1.o uart.o 

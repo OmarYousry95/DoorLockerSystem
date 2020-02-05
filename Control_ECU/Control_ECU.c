@@ -409,7 +409,7 @@ void fireBuzzerOrOpenDoor(void)
 	count++;
 	/*When count=3, this means 15 sec time
 	 *When g_state=0, this means password is entered correctly*/
-	if(count==1 && g_state==0)
+	if(count==3 && g_state==0)
 	{
 		/*Close the door*/
 		motorRotateAntiClockwise();
@@ -418,7 +418,7 @@ void fireBuzzerOrOpenDoor(void)
 	}
 	/*When count=6, this means 30 sec time
 	 *When g_state=0, this means password is entered correctly*/
-	if(count==2 && g_state==0)
+	if(count==6 && g_state==0)
 	{
 		/*Lock the door*/
 		motorStop();
